@@ -45,4 +45,4 @@ python sql_dork_tool.py -d dork_list.txt -e bing -p -r 15
 
 # KESİNLİKLE OKU (MUST READ!!!)
 
-# Bu araç kullanıcıya profesyonel bir yapı sunmakta ve güvenlik testi veya eğitim amacıyla kullanılabilir. İzinsiz tarama ve SQL saldırıları yasadışıdır, bu yüzden etik hacking kurallarına dikkat edin. Herhangi bir izinsiz tarama ve SQL saldırısından Şahsım sorumlu değildir ve yükümlülük kabul etmeyeceğim !!!
+# Bu araç kullanıcıya profesyonel bir yapı sunmakta ve güvenlik testi veya eğitim amacıyla kullanılabilir. İzinsiz tarama ve SQL saldırıları yasadışıdır, bu yüzden etik hacking kurallarına dikkat edin. Herhangi bir izinsiz tarama ve SQL saldırısından Şahsım sorumlu değildir ve herhangi bir yükümlülük kabul etmeyeceğim !!!
