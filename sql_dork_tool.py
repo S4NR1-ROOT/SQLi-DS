@@ -1,12 +1,10 @@
-# EDİT BY S4NR1
+# Prepared by: S4NR1
 
 import requests
 from bs4 import BeautifulSoup
 import time
 import random
 import argparse
-
-# Proxy desteği için gerekli modül
 from itertools import cycle
 
 # Arama motoru URL'leri
@@ -16,10 +14,8 @@ SEARCH_ENGINES = {
     "yahoo": "https://search.yahoo.com/search?p="
 }
 
-# Proxy desteği (isteğe bağlı, kullanıcı proksi ekleyebilir)
-PROXIES = ["http://proxy1.com", "http://proxy2.com"] # Bu listeyi güncelleyebilirsiniz.
-
-# Proxy döngüsü için
+# Proxy desteği (isteğe bağlı)
+PROXIES = ["http://proxy1.com", "http://proxy2.com"]  # Güncel proxy ekleyin
 proxy_pool = cycle(PROXIES)
 
 # Kullanıcı aracısı (User-Agent) sahteciliği
@@ -29,7 +25,7 @@ USER_AGENTS = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0'
 ]
 
-# Google'dan arama sonuçlarını çeker
+# Arama motorundan sorgu sonuçlarını getir
 def search_query(query, engine="google", use_proxy=False):
     headers = {
         'User-Agent': random.choice(USER_AGENTS)
@@ -56,15 +52,20 @@ def search_query(query, engine="google", use_proxy=False):
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
     else:
+        print(f"Arama sorgusu başarısız oldu, durum kodu: {response.status_code}")
         return None
 
-# Bağlantıları ayıklar
+# Bağlantıları ayıkla (güncellenmiş yapı)
 def extract_links(soup):
     links = []
     for item in soup.find_all('a'):
         href = item.get('href')
-        if href and "url?q=" in href:
-            links.append(href.split("url?q=")[1].split("&")[0])
+        if href:
+            if href.startswith("/url?q="):  # Google için sonuçlar
+                link = href.split("/url?q=")[1].split("&")[0]
+                links.append(link)
+            elif "http" in href:  # Genel linkler
+                links.append(href)
     return links
 
 # Sonuçları dosyaya kaydet
@@ -81,7 +82,7 @@ def parse_args():
     parser.add_argument("-e", "--engine", help="Kullanılacak arama motorunu seçin (google, bing, yahoo).", default="google")
     parser.add_argument("-o", "--output", help="Sonuçları kaydetmek için dosya adı.", default="results.txt")
     parser.add_argument("-p", "--proxy", help="Proxy kullanarak arama yapın.", action="store_true")
-    parser.add_argument("-r", "--rate", help="Her istek arasında bekleme süresi (saniye).", type=int, default=5)
+    parser.add_argument("-r", "--rate", help="Her istek arasında bekleme süresi (saniye).", type=int, default=10)
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -108,7 +109,7 @@ if __name__ == "__main__":
             # Sonuçları kaydet
             save_results(args.output, dork, links)
         else:
-            print(f"{dork} için arama yapılamadı.")
+            print(f"{dork} için sonuç alınamadı.")
         
         # Rate limiting (istek hızını kontrol etme)
         time.sleep(args.rate)
